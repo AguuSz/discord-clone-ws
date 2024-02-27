@@ -11,6 +11,7 @@
 	<groupId>com.aguusz</groupId>
 	<artifactId>discord</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>discord-clone</name>
 	<description>Discord clone WS for practising purposes.</description>
 	<properties>
@@ -46,7 +47,100 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>5.3.29</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>9.0.79</version>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<!-- Perfiles de ejecución -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+
+		</profile>
+
+		<!-- Perfiles de empaquetado -->
+		<profile>
+			<id>war-build</id>
+			<properties>
+				<packaging.type>war</packaging.type>
+				<tomcat.scope>provided</tomcat.scope>
+			</properties>
+			<activation>
+				<property>
+					<name>build</name>
+					<value>war</value>
+				</property>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<finalName>ROOT</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>repackage</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+
+		<profile>
+			<id>jar-build</id>
+			<properties>
+				<packaging.type>jar</packaging.type>
+				<tomcat.scope>compile</tomcat.scope>
+			</properties>
+			<activation>
+				<property>
+					<name>build</name>
+					<value>jar</value>
+				</property>
+			</activation>
+			<build>
+				<finalName>iw3</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
