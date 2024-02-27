@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: discord-mysql8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: discord
+      MYSQL_USER: agus
+      MYSQL_PASSWORD: gorogil123
+    ports:
+      - "5555:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
